@@ -1,0 +1,27 @@
+@import '/src/assets/scss/constants.scss';
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}
+
+.material-icons .cancelar{
+  padding: 2px;
+  background-color: red !important;
+  cursor: pointer;
+}
+.header{
+  display: flex;
+  gap:1em
+}
+h4{
+  font-size: x-large;
+}

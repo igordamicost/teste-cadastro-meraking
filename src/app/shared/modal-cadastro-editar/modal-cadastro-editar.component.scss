@@ -1,0 +1,21 @@
+input{
+  padding: 1%;
+}
+.modal{
+  display: flex;
+  width: 250px;
+  flex-direction: column;
+  gap: 2em;
+  margin-left: 25px;
+  margin-top: 5px;
+  .mensageria{
+    display: flex;
+    justify-content: flex-end;
+    padding: 3%;
+    flex-direction: column;
+  }
+}
+div{display: flex; justify-content: flex-end;}
+h4{
+  color:red
+}

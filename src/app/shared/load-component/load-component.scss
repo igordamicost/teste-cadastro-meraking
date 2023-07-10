@@ -1,0 +1,23 @@
+@import "./load-animation.component.scss";
+
+.show {
+  opacity: 1 !important;
+  z-index: 999999 !important;
+}
+
+.hidden {
+  opacity: 0 !important;
+  z-index: -1 !important;
+  display: none;
+}
+
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  opacity: 0.5;
+  background: #0009;
+  z-index: 9;
+  text-align: center;
+}
+
