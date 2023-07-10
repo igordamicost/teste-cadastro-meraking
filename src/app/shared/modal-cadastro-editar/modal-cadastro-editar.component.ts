@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, } from '@angular/material/dialog';
 import { load } from '../load-component/load-component'
+import { EventEmitter, Output } from '@angular/core';
+import { UsuarioInterfaceResponse } from 'src/assets/interface/user-list.interface';
 
 @Component({
   selector: 'app-modal-cadastro-editar',
@@ -8,6 +10,8 @@ import { load } from '../load-component/load-component'
   styleUrls: ['./modal-cadastro-editar.component.scss']
 })
 export class ModalCadastroEditarComponent {
+  @Output() usuarioAtualizado = new EventEmitter<UsuarioInterfaceResponse>();
+  @Output() usuarioCriado = new EventEmitter<UsuarioInterfaceResponse>();
 
   public visualizar:boolean
   public mensageria:boolean
@@ -18,7 +22,7 @@ export class ModalCadastroEditarComponent {
   public formUser: string;
   public formEmail: string;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,public dialog:MatDialog) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,public dialog:MatDialog,public dialogRef?: MatDialogRef<ModalCadastroEditarComponent>) {
     this.visualizar = data.visualizar;
     this.mensageria = data.mensageria;
     this.form = data.form;
@@ -30,13 +34,14 @@ export class ModalCadastroEditarComponent {
   }
 
   public salvarUsuario(){
+    load.show()
     const body = {id: this.formId, username: this.formUser, email: this.formEmail}
     if (this.editar){
-      console.log('editar',body)
+      this.usuarioAtualizado.emit(body);
     } else if (this.cadastrar) {
-      console.log('cadastrar',body)
+      this.usuarioCriado.emit(body);
     }
-
+    this.dialogRef?.close(body);
   }
 
   public fechar(){

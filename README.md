@@ -37,4 +37,7 @@ Este projeto foi gerado com o Angular CLI na versão 16.1.3.
 
 Para obter mais ajuda sobre o Angular CLI, use o comando ng help ou consulte a página Angular CLI Overview and Command Reference.
 
-Espero que isso ajude!
+Aguardo retorno da avaliação.
+Atenciosamente
+
+Igor D'Amico Sotolani.

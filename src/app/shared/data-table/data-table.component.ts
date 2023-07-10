@@ -33,7 +33,9 @@ export class DataTableComponent {
   public ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    load.hide()
+    setTimeout(() => {
+      load.hide()
+    },1000)
   }
 
   public obterUsuariosCadastrados() {
@@ -54,7 +56,11 @@ export class DataTableComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-
+  /**
+   * metodo responsavel por abrir modal para visualizar um item da lista
+   * @param event linha a ser visualizada
+   * @method visualizarUsuario
+   */
   public visualizarUsuario(event:any){
     this.dialog.open(ModalCadastroEditarComponent, {
       height: '300px',
@@ -63,14 +69,38 @@ export class DataTableComponent {
     })
   }
 
+  /**
+   * metodo responsavel por abrir modal para alterar um item da lista
+   * @param event linha a ser editada
+   * @param usuarios lista que tera a linha editada
+   * @method editarUsuario
+   */
   public editarUsuario(event:UsuarioInterfaceResponse){
-    this.dialog.open(ModalCadastroEditarComponent, {
+    const dialogRef = this.dialog.open(ModalCadastroEditarComponent, {
       height: '300px',
       width: '300px',
       data: { usuario: event, visualizar: false, form: true, editar: true }
     })
+    dialogRef.afterClosed().subscribe((usuarioAtualizado?: UsuarioInterfaceResponse) => {
+      if (usuarioAtualizado && this.usuarios) {
+        const index = this.usuarios.findIndex(usuario => usuario.id === usuarioAtualizado.id);
+        if (index !== -1) {
+          this.dataSource.data[index] = usuarioAtualizado;
+          this.dataSource._updateChangeSubscription();
+          setTimeout(() => {
+            load.hide();
+          }, 1000);
+        }
+      }
+    });
   }
 
+  /**
+   * metodo responsavel por abrir modal para deletar uma posição da lista
+   * @param event linha a ser deletada
+   * @param usuarios lista que tera a linha removida
+   * @method deletarUsuario
+   */
   public deletarUsuario(event?: UsuarioInterfaceResponse): void {
     if (event && this.usuarios) {
       const index = this.usuarios.findIndex(usuario => usuario?.id === event.id);
@@ -90,12 +120,27 @@ export class DataTableComponent {
     }
   }
 
+  /**
+   * metodo responsavel por abrir modal para cadastro
+   * @method abrirDialogCadastro
+   */
   public abrirDialogCadastro(){
-    let usuario ={ id: null, username: '', email:''}
-    this.dialog.open(ModalCadastroEditarComponent, {
-      height: '250px',
+    const dataSourceData = this.dataSource.data;
+    const proximoId = dataSourceData.length + 1;
+    let usuario ={ id: proximoId, username: '', email:''}
+    const dialogRef = this.dialog.open(ModalCadastroEditarComponent, {
+      height: '300px',
       width: '300px',
       data: { usuario: usuario, visualizar: false, form: true, cadastrar:true, editar:false }
     })
+    dialogRef.afterClosed().subscribe((usuarioCriado?: UsuarioInterfaceResponse) => {
+      if (usuarioCriado && this.usuarios) {
+        this.usuarios?.push(usuarioCriado);
+        this.dataSource.data = [...this.usuarios];
+        setTimeout(() => {
+          load.hide();
+        }, 1000);
+      }
+    });
   }
 }
